@@ -287,7 +287,7 @@ namespace Snowflake.Data.Core
                     backOffInSec = backOffInSec >= maxDefaultBackoff ?
                             maxDefaultBackoff : backOffInSec * 2;
 
-                    if (totalRetryTime + backOffInSec > restTimeout.TotalSeconds)
+                    if ((restTimeout.TotalSeconds > 0) && (totalRetryTime + backOffInSec > restTimeout.TotalSeconds))
                     {
                         // No need to wait more than necessary if it can be avoided.
                         // If the rest timeout will be reached before the next back-off,
@@ -305,10 +305,8 @@ namespace Snowflake.Data.Core
             private bool isRetryableHTTPCode(int statusCode)
             {
                 return (500 <= statusCode) && (statusCode < 600) ||
-                // Bad request
-                (statusCode == 400) ||
-                // Rate limit reached
-                (statusCode == 429) ||
+                // Forbidden
+                (statusCode == 403) ||
                 // Request timeout
                 (statusCode == 408);
             }
