@@ -107,6 +107,7 @@ namespace Snowflake.Data.Core
                 string noProxyHosts = null;
                 string proxyPwd = null;
                 string proxyUser = null;
+                bool useDefaultProxyCredentials = false;
                 if (Boolean.Parse(properties[SFSessionProperty.USEPROXY]))
                 {
                     // Let's try to get the associated RestRequester
@@ -115,6 +116,7 @@ namespace Snowflake.Data.Core
                     properties.TryGetValue(SFSessionProperty.NONPROXYHOSTS, out noProxyHosts);
                     properties.TryGetValue(SFSessionProperty.PROXYPASSWORD, out proxyPwd);
                     properties.TryGetValue(SFSessionProperty.PROXYUSER, out proxyUser);
+                    useDefaultProxyCredentials = Boolean.Parse(properties[SFSessionProperty.USEPROXYDEFAULTCREDENTIALS]);
 
                     if (!String.IsNullOrEmpty(noProxyHosts))
                     {
@@ -125,7 +127,7 @@ namespace Snowflake.Data.Core
                 }
 
                 restRequester =
-                    RestRequester.GetRestRequester(proxyHost, proxyPort, proxyUser, proxyPwd, noProxyHosts);
+                    RestRequester.GetRestRequester(proxyHost, proxyPort, proxyUser, proxyPwd, noProxyHosts, useDefaultProxyCredentials);
                 
             }
             catch (Exception e)

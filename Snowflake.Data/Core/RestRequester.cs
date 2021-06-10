@@ -66,7 +66,8 @@ namespace Snowflake.Data.Core
             string proxyPort,
             string proxyUser,
             string proxyPassword,
-            string noProxyList)
+            string noProxyList,
+            bool useProxyDefaultCredentials)
         {
             string key = string.Join(";", new string[]{ proxyHost, proxyPort, proxyUser, proxyPassword, noProxyList });
             lock(requesterPoolLock)
@@ -78,13 +79,14 @@ namespace Snowflake.Data.Core
                     {
                         // New proxy needed
                         webProxy = new WebProxy(proxyHost, int.Parse(proxyPort));
+                        webProxy.UseDefaultCredentials = useProxyDefaultCredentials;
 
                         // Add credential if provided
                         if (!String.IsNullOrEmpty(proxyUser))
                         {
                             ICredentials credentials = new NetworkCredential(proxyUser, proxyPassword);
                             webProxy.Credentials = credentials;
-                        }
+                        }                        
 
                         // Add bypasslist if provided
                         if (!String.IsNullOrEmpty(noProxyList))

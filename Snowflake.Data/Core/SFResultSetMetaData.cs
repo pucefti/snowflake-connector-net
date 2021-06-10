@@ -134,7 +134,7 @@ namespace Snowflake.Data.Core
             switch (sfType)
             {
                 case SFDataType.FIXED:
-                    return col.scale == 0 ? typeof(long) : typeof(decimal);
+                    return col.scale == 0 && col.precision < 19 ? typeof(long) : typeof(decimal);
                 case SFDataType.REAL:
                     return typeof(double);
                 case SFDataType.TEXT:

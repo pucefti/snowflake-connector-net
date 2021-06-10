@@ -58,9 +58,11 @@ namespace Snowflake.Data.Core
         PROXYUSER,
         [SFSessionPropertyAttr(required = false)]
         PROXYPASSWORD,
+        [SFSessionPropertyAttr(required = false, defaultValue = "false")]
+        USEPROXYDEFAULTCREDENTIALS,
         [SFSessionPropertyAttr(required = false)]
         NONPROXYHOSTS,
-        
+
     }
 
     class SFSessionPropertyAttr : Attribute
