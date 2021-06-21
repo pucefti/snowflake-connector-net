@@ -25,7 +25,8 @@ namespace Snowflake.Data.Core
             string proxyPort,
             string proxyUser,
             string proxyPassword,
-            string noProxyList)
+            string noProxyList,
+            bool useDefaultProxyCredentials)
         {
             CrlCheckEnabled = crlCheckEnabled;
             ProxyHost = proxyHost;
@@ -33,6 +34,7 @@ namespace Snowflake.Data.Core
             ProxyUser = proxyUser;
             ProxyPassword = proxyPassword;
             NoProxyList = noProxyList;
+            UseDefaultProxyCredentials = useDefaultProxyCredentials;
 
             ConfKey = string.Join(";", 
                 new string[] {
@@ -50,6 +52,7 @@ namespace Snowflake.Data.Core
         public readonly string ProxyUser;
         public readonly string ProxyPassword;
         public readonly string NoProxyList;
+        public readonly bool UseDefaultProxyCredentials;
 
         // Key used to identify the HttpClient with the configuration matching the settings
         public readonly string ConfKey;
@@ -136,6 +139,10 @@ namespace Snowflake.Data.Core
                 {
                     ICredentials credentials = new NetworkCredential(config.ProxyUser, config.ProxyPassword);
                     proxy.Credentials = credentials;
+                }
+                else
+                {
+                    proxy.UseDefaultCredentials = config.UseDefaultProxyCredentials;
                 }
 
                 // Add bypasslist if provided

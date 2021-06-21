@@ -113,6 +113,7 @@ namespace Snowflake.Data.Core
                 string noProxyHosts = null;
                 string proxyPwd = null;
                 string proxyUser = null;
+                bool useDefaultProxyCredentials = false;
                 if (Boolean.Parse(properties[SFSessionProperty.USEPROXY]))
                 {
                     // Let's try to get the associated RestRequester
@@ -121,6 +122,11 @@ namespace Snowflake.Data.Core
                     properties.TryGetValue(SFSessionProperty.NONPROXYHOSTS, out noProxyHosts);
                     properties.TryGetValue(SFSessionProperty.PROXYPASSWORD, out proxyPwd);
                     properties.TryGetValue(SFSessionProperty.PROXYUSER, out proxyUser);
+
+                    if(properties.ContainsKey(SFSessionProperty.USEPROXYDEFAULTCREDENTIALS))
+                    {
+                        useDefaultProxyCredentials = Boolean.Parse(properties[SFSessionProperty.USEPROXYDEFAULTCREDENTIALS]);
+                    }
 
                     if (!String.IsNullOrEmpty(noProxyHosts))
                     {
@@ -138,7 +144,8 @@ namespace Snowflake.Data.Core
                         proxyPort, 
                         proxyUser, 
                         proxyPwd, 
-                        noProxyHosts);
+                        noProxyHosts,
+                        useDefaultProxyCredentials);
 
                 // Get the http client for the config
                 _HttpClient = HttpUtil.Instance.GetHttpClient(httpClientConfig);
