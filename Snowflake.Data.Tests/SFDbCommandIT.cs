@@ -336,7 +336,11 @@ namespace Snowflake.Data.Tests
                     }
                     catch(SnowflakeDbException e)
                     {
-                        Assert.AreEqual(e.ErrorCode, 604);
+                        // 604 is error code from server meaning query has been canceled
+                        if (604 != e.ErrorCode)
+                        {
+                            Assert.Fail($"Unexpected error code {e.ErrorCode} for {e.Message}");
+                        }
                     }
                 });
 
@@ -349,9 +353,17 @@ namespace Snowflake.Data.Tests
                 }
                 catch (AggregateException e)
                 {
-                    Assert.AreEqual(
-                    "System.Threading.Tasks.TaskCanceledException",
-                    e.InnerException.GetType().ToString());
+                    if (e.InnerException.GetType() != typeof(NUnit.Framework.AssertionException))
+                    {
+                        Assert.AreEqual(
+                        "System.Threading.Tasks.TaskCanceledException",
+                        e.InnerException.GetType().ToString());
+                    }
+                    else
+                    {
+                        // Unexpected exception
+                        throw;
+                    }
                 }
 
                 conn.Close();
@@ -386,7 +398,7 @@ namespace Snowflake.Data.Tests
                 }
                 catch(SnowflakeDbException e)
                 {
-                    // 604 is error code from server meaning query has been cancelled
+                    // 604 is error code from server meaning query has been canceled
                     Assert.AreEqual(e.ErrorCode, 604);
                 }
 

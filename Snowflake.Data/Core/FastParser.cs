@@ -81,6 +81,7 @@ namespace Snowflake.Data.Core
             // Parse integer part and decimal part as 64-bit numbers
             // Calculate decimal number to return
             int decimalPos = Array.IndexOf<byte>(s, (byte)'.', offset, len);
+
             // No decimal point found, just parse as integer
             if (decimalPos < 0)
             {

@@ -34,7 +34,7 @@ namespace Snowflake.Data.Core
         USER,
         [SFSessionPropertyAttr(required = false)]
         WAREHOUSE,
-        [SFSessionPropertyAttr(required = false, defaultValue = "900")] //15min
+        [SFSessionPropertyAttr(required = false, defaultValue = "120")]
         CONNECTION_TIMEOUT,
         [SFSessionPropertyAttr(required = false, defaultValue = "snowflake")]
         AUTHENTICATOR,
@@ -48,6 +48,8 @@ namespace Snowflake.Data.Core
         PRIVATE_KEY,
         [SFSessionPropertyAttr(required = false)]
         TOKEN,
+        [SFSessionPropertyAttr(required = false, defaultValue = "false")]
+        INSECUREMODE,
         [SFSessionPropertyAttr(required = false, defaultValue = "false")]
         USEPROXY,
         [SFSessionPropertyAttr(required = false)]
